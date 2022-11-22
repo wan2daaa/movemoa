@@ -1,3 +1,7 @@
+# 시작전 
+movemoa 폴더에서 npm i 
+cd react_front npm i 
+
 # 파일 구조 
 - movemoa 바로 밑에 있는 것들이 백엔드 express (index.js)
 - react_front 부분이 이제 보이는 부분 

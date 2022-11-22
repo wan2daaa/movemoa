@@ -1,12 +1,10 @@
-
-
 require('dotenv').config();
-var cors = require('cors');
+const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require("path");
 const router = express.Router();
-
+const emailHandler = require('./email');
 
 const app = express();
 
@@ -44,10 +42,43 @@ app.listen(PORT, console.log(`server listenint on port ${PORT}`));
  */
 const data = {name : '재완', age: 25};
 
+app.use(express.static(path.join(__dirname, 'react_front/build')));
+
+
+
 app.get('/testapi', (req, res) => {
     res.json(data);
 });
 
+var generateRandom = function (min,max){
+    var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+    return randomNumber;
+}
+
+app.post('/signup', async (req, res) =>{
+    const signupData = req.body;
+    console.log(signupData);
+    signupData.message = generateRandom(111111, 999999).toString();
+    const verify = signupData.message;
+    console.log(verify)
+        try {
+            const result = await emailHandler.send(signupData);
+            console.log(verify);
+            res.send(verify);
+            // res.send({message: 'success to send a message', result});
+        } catch (e) {
+            res.send(verify);
+        };
+
+    app.post('/signupdata', async (req, res) => {
+        const signupData = req.body;
+        console.log(signupData);
+    });
 
 
+});
+
+app.get('*', function (요청, 응답) {
+    응답.sendFile(path.join(__dirname, '/react_front/build/index.html'));
+});
 
