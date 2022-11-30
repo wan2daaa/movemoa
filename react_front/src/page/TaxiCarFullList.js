@@ -1,8 +1,8 @@
 import Table from 'react-bootstrap/Table';
 import {Button, Modal} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
-import StudentdataModal from "./carfullmodal/StudentdataModal";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import axios from "axios";
 
 function TaxiCarfullList(props) {
     let navigate = useNavigate();
@@ -10,11 +10,30 @@ function TaxiCarfullList(props) {
     const [showModal, setShowModal] = useState(false);
     const handleClose = () => setShowModal(false);
     const handleShow = () => setShowModal(true);
+    const [viewContent , setViewContent] = useState([]);
+
+    const [id, setId] = useState(0);
+
+
+
+    useEffect(()=>{
+        axios.get('http://localhost:8080/api/student/getAll').then((response)=>{
+            setViewContent(response.data);
+        })
+
+    },[]);
+
+
+    const setModal = ()=>{
+        setShowModal(true);
+    }
+
 
     return (
         <>
             <Button className="float-end mx-5" onClick={() => {
-                navigate('/carfull/taxi-register')
+
+                navigate('/carfull/student-register');
             }}>등록</Button>
             <Table striped className="mb-5">
                 <thead>
@@ -28,46 +47,26 @@ function TaxiCarfullList(props) {
                 </tr>
                 </thead>
                 <tbody>
-                {/*{props.datas.map(function (data, index) {*/}
-                {/*    return(*/}
-                {/*        <tr>*/}
-                {/*            <td>{index}</td>*/}
-                {/*            <td>{data.title}</td>*/}
-                {/*            <td>{data.content}</td>*/}
-                {/*            <td>{data.price}</td>*/}
-                {/*        </tr>*/}
-                {/*    )*/}
-                {/*})}*/}
+                {viewContent.map(function (data, index) {
+                    return(
+                        <>
+                            <tr>
+                                <td>{data.idx}</td>
+                                <td>{data.start}</td>
+                                <td>{data.end}</td>
+                                <td>{data.member}자리 남음</td>
+                                <td>{data.price}</td>
+                                <td><Button  onClick={()=>{ navigate(`/carfull/student/${data.idx}`); } }>예약하기</Button></td>
 
-                <tr>
-                    <td>1</td>
-                    <td>건터</td>
-                    <td>호암지</td>
-                    <td>1자리 남음</td>
-                    <td>3000</td>
-                    <td><Button onClick={handleShow}>예약하기</Button></td>
-                    <StudentdataModal show={showModal} handleClose={handleClose}/>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>학교 도서관</td>
-                    <td>충터</td>
-                    <td>{`2자리 남음`}</td>
-                    <td>4000</td>
-                    <td><Button onClick={handleShow}>예약하기</Button></td>
-                    <StudentdataModal show={showModal} handleClose={handleClose}/>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>바보계단</td>
-                    <td>건국이네</td>
-                    <td>많이 남음</td>
-                    <td>5000</td>
-                    <td><Button onClick={handleShow}>예약하기</Button></td>
-                    <StudentdataModal show={showModal} handleClose={handleClose}/>
-                </tr>
+
+                            </tr>
+
+                        </>
+                    )
+                })}
                 </tbody>
             </Table>
+
         </>
     );
 }

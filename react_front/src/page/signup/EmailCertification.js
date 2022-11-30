@@ -2,7 +2,7 @@ import {Form} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 
-<Form.Control type="text" placeholder={"인증번호"}></Form.Control>
+// <Form.Control type="text" placeholder={"인증번호"}></Form.Control>
 
 const EmailCertification = () =>{
     const navigate = useNavigate();

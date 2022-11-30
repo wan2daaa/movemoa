@@ -17,6 +17,7 @@ const SignUp = () =>{
     const [veryHidden, setVeryHidden] = useState(false);
     const [showPass, setShowPass] = useState(true);
     const [password, setPassword] = useState("");
+    const [name, setName] = useState("");
     const [showRightModal, setShowRightModal] = useState(false);
     const [showWrongModal, setShowWrongModal] = useState(false);
     const [showPassModal, setShowPassModal] = useState(false);
@@ -38,7 +39,8 @@ const SignUp = () =>{
 
         let body = {
             email : postEmail,
-            pass : password
+            pass : password,
+            name: name
         }
 
         axios.post("http://localhost:8080/signupdata", body);
@@ -74,6 +76,8 @@ const SignUp = () =>{
             </Form>
             <Form onSubmit={signupHandler}>
                 <Form.Group hidden={showPass}>
+                    <Form.Text>이름</Form.Text>
+                    <Form.Control type="text" placeholder={"이름"} onChange={(e)=>{setName(e.target.value)}}></Form.Control>
                     <Form.Text>비밀번호</Form.Text>
                     <Form.Control type="password" placeholder={"비밀번호"} onChange={(e)=>{setPassword(e.target.value)}}></Form.Control>
                     <Button variant="primary" type="submit" size={"sm"} style={{marginTop:'2px', marginBottom:'5px'}} onClick={()=>{setShowPassModal(!showPassModal)}}>비밀번호 설정 </Button>

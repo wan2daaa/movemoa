@@ -1,24 +1,39 @@
 import {Button, Modal} from "react-bootstrap";
-import popover from "bootstrap/js/src/popover";
+import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
-const StudentCarfullModal = (props) => {
-    return (
-        <>
-            <Modal show={props.show} onHide={props.handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>어디에서 어디로</Modal.Title>
-                </Modal.Header>
+const StudentCarfullModal = (props) =>{
+    const navigate = useNavigate();
 
-                <Modal.Body>
-                    <p>예약 하시겠습니까?</p>
-                </Modal.Body>
+    return(
+        <Modal show={props.show} onHide={props.close}>
+            <Modal.Header closeButton>
+                <Modal.Title>어디에서 어디로</Modal.Title>
+            </Modal.Header>
 
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={props.handleClose}>닫기</Button>
-                    <Button variant="primary" onClick={props.handleClose}>등록하기</Button>
-                </Modal.Footer>
-            </Modal>
-        </>
+            <Modal.Body>
+                <p>예약 하시겠습니까?</p>
+            </Modal.Body>
+
+            <Modal.Footer>
+                <Button variant="secondary" onClick={props.close}>닫기</Button>
+                <Button variant="primary" onClick={()=>{
+                    if (props.member > 0){
+                        let body = {
+                            idx : props.index,
+                            member : props.member
+                        }
+                        axios.post('http://localhost:8080/api/student/reserve', body);
+                        navigate('/student');
+                    }else {
+                        alert("더는 예약할 수 없습니다!");
+                        navigate('/student');
+                    }
+
+                }} >등록하기</Button>
+            </Modal.Footer>
+        </Modal>
     )
-};
+}
+
 export default StudentCarfullModal
